@@ -1,0 +1,27 @@
+{
+  "name": "prueba-tecnica",
+  "version": "1.0.0",
+  "description": "api crud for product purchases based on mvc model",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "crud",
+    "api"
+  ],
+  "author": "barcasnerd",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "typeorm": "^0.2.37"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/morgan": "^1.9.3",
+    "typescript": "^4.4.3"
+  }
+}
