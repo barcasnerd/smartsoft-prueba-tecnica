@@ -4,6 +4,7 @@
     "port": 5432,
     "username": "smartsoft",
     "password": "root",
-    "database": "marketdatabase"
+    "database": "marketdatabase",
+    "entities": ""
  }
  
