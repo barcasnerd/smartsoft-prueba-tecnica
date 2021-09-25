@@ -1,0 +1,25 @@
+version: "3"
+
+services: 
+    api:
+        container_name: backend_api
+        restart: always
+        build: .
+        ports: 
+            - "3000:3000"
+        links:
+            - postgresql
+        volumes:
+            - .:/usr/src/app
+    postgresql:
+        container_name: backend_database
+        image: postgres
+        restart: always
+        environment: 
+            POSTGRES_PASSWORD: root
+            POSTGRES_USER: smartsoft
+            POSTGRES_DB: marketdatabase
+        ports: 
+            - "5432:5432"
+        logging:
+            driver: none
