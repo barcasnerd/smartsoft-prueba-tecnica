@@ -5,6 +5,7 @@
     "username": "smartsoft",
     "password": "root",
     "database": "marketdatabase",
-    "entities": ""
+    "entities": ["dist/entity/**/*.js"],
+    "synchronize": true
  }
  
