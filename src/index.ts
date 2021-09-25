@@ -14,7 +14,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // routes
-app.use(userRoutes);
+app.use('/api',userRoutes);
 
 
 // setting server listen config

@@ -16,7 +16,7 @@ app.use((0, cors_1.default)());
 app.use((0, morgan_1.default)('dev'));
 app.use(express_1.default.json());
 // routes
-app.use(user_routes_1.default);
+app.use('/api', user_routes_1.default);
 // setting server listen config
 app.set('port', 3000);
 app.listen(app.get('port'));
