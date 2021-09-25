@@ -39,6 +39,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUser = exports.getUser = exports.createUser = exports.getUsers = void 0;
 var typeorm_1 = require("typeorm");
 var User_1 = require("../entity/User");
+/**
+ * Get a list of users saved on the user database table
+ * @param req
+ * @param res
+ * @returns list of users
+ */
 var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users;
     return __generator(this, function (_a) {
@@ -51,6 +57,12 @@ var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
     });
 }); };
 exports.getUsers = getUsers;
+/**
+ * Create an user, then save it into the user database table
+ * @param req
+ * @param res
+ * @returns the saved user
+ */
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var newUser, results;
     return __generator(this, function (_a) {
@@ -65,6 +77,12 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.createUser = createUser;
+/**
+ * Gets an user based on the reques id
+ * @param req
+ * @param res
+ * @returns an user by id
+ */
 var getUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var result;
     return __generator(this, function (_a) {
@@ -77,6 +95,12 @@ var getUser = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
     });
 }); };
 exports.getUser = getUser;
+/**
+ * Update an user basedn on request id and its changes
+ * @param req
+ * @param res
+ * @returns user with changes
+ */
 var updateUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, results;
     return __generator(this, function (_a) {
@@ -95,6 +119,9 @@ var updateUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.updateUser = updateUser;
+/**
+ * delete an user based on its id
+ */
 var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var result;
     return __generator(this, function (_a) {
