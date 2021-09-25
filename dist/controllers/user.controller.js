@@ -36,14 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUsers = void 0;
+exports.createUser = exports.getUsers = void 0;
 var typeorm_1 = require("typeorm");
 var User_1 = require("../entity/User");
-/**
- * Get users from database
- * @param req
- * @param res
- */
 var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users;
     return __generator(this, function (_a) {
@@ -56,3 +51,17 @@ var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
     });
 }); };
 exports.getUsers = getUsers;
+var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var newUser, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                newUser = (0, typeorm_1.getRepository)(User_1.User).create(req.body);
+                return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).save(newUser)];
+            case 1:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.createUser = createUser;
