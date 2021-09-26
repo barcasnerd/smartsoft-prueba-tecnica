@@ -33,7 +33,10 @@ export const createProduct = async (req: Request, res: Response): Promise<Respon
  */
 export const getProduct = async (req: Request, res: Response): Promise<Response> => {
     const result = await getRepository(Product).findOne(req.params.id);
-    return res.json(result);
+    if (result) {
+        return res.status(302).json(result);
+    }
+    return res.status(404).json({ msg: "Product not found" });
 };
 
 /**
@@ -49,7 +52,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
         const results = await getRepository(Product).save(product);
         return res.json(results);
     }
-    return res.status(404).json({ msg: "product not found" });
+    return res.status(404).json({ msg: "Product not found" });
 };
 
 /**
@@ -57,5 +60,8 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
  */
 export const deleteProduct = async (req: Request, res: Response): Promise<Response> => {
     const result = await getRepository(Product).delete(req.params.id);
-    return res.json(result);
+    if (result) {
+        return res.json(result);
+    }
+    return res.status(404).json({ msg: "Product not found" });
 };

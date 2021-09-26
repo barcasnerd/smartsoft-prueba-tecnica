@@ -90,7 +90,10 @@ var getProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, 
             case 0: return [4 /*yield*/, (0, typeorm_1.getRepository)(Product_1.Product).findOne(req.params.id)];
             case 1:
                 result = _a.sent();
-                return [2 /*return*/, res.json(result)];
+                if (result) {
+                    return [2 /*return*/, res.status(302).json(result)];
+                }
+                return [2 /*return*/, res.status(404).json({ msg: "Product not found" })];
         }
     });
 }); };
@@ -114,7 +117,7 @@ var updateProduct = function (req, res) { return __awaiter(void 0, void 0, void 
             case 2:
                 results = _a.sent();
                 return [2 /*return*/, res.json(results)];
-            case 3: return [2 /*return*/, res.status(404).json({ msg: "product not found" })];
+            case 3: return [2 /*return*/, res.status(404).json({ msg: "Product not found" })];
         }
     });
 }); };
@@ -129,7 +132,10 @@ var deleteProduct = function (req, res) { return __awaiter(void 0, void 0, void 
             case 0: return [4 /*yield*/, (0, typeorm_1.getRepository)(Product_1.Product).delete(req.params.id)];
             case 1:
                 result = _a.sent();
-                return [2 /*return*/, res.json(result)];
+                if (result) {
+                    return [2 /*return*/, res.json(result)];
+                }
+                return [2 /*return*/, res.status(404).json({ msg: "Product not found" })];
         }
     });
 }); };
