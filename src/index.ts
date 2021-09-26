@@ -7,6 +7,7 @@ import session from "express-session"; // create and manage a session middleware
 import config from "./config/config"; // multiple env (if exist) configurations
 import { createConnection } from "typeorm"; // main database orm
 import passport from 'passport'
+import { authValidator } from "./middlewares/authValidator";
 
 // import routes
 import authRoutes from "./routes/auth.routes";
@@ -38,7 +39,7 @@ app.use(passport.session());
 
 // routes
 app.use('/',authRoutes);
-app.use('/products', productRoutes);
+app.use('/products', authValidator, productRoutes);
 
 // start the server
 app.listen(app.get('port'));

@@ -12,6 +12,7 @@ var express_session_1 = __importDefault(require("express-session")); // create a
 var config_1 = __importDefault(require("./config/config")); // multiple env (if exist) configurations
 var typeorm_1 = require("typeorm"); // main database orm
 var passport_1 = __importDefault(require("passport"));
+var authValidator_1 = require("./middlewares/authValidator");
 // import routes
 var auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 var product_routes_1 = __importDefault(require("./routes/product.routes"));
@@ -36,7 +37,7 @@ app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 // routes
 app.use('/', auth_routes_1.default);
-app.use('/products', product_routes_1.default);
+app.use('/products', authValidator_1.authValidator, product_routes_1.default);
 // start the server
 app.listen(app.get('port'));
 console.log("server on port " + app.get('port'));
