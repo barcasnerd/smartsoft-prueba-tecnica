@@ -75,7 +75,6 @@ passport_1.default.deserializeUser(function (id, done) { return __awaiter(void 0
         }
     });
 }); });
-exports.authUser = passport_1.default.authenticate('local', {
-    successRedirect: "/api/users",
-    failureRedirect: "login",
+exports.authUser = passport_1.default.authenticate('local', function (req, res) {
+    res.json({ msg: "Succesfully logged in" });
 });

@@ -23,7 +23,6 @@ passport.deserializeUser<any, any>(async (id, done) => {
     done(null, user);
 });
 
-export const authUser = passport.authenticate('local', {
-    successRedirect: "/api/users",
-    failureRedirect: "login",
+export const authUser = passport.authenticate('local', (req, res)=>{
+    res.json({msg: "Succesfully logged in"});
 });
