@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authUser, createUser, updateUser } from "../controllers/auth.controller";
+import { authUser, createUser, updateUser, getUsers } from "../controllers/auth.controller";
 import { Request, Response } from "express";
 import { authValidator } from "../middlewares/authValidator";
 const router = Router();
@@ -24,6 +24,6 @@ router.put('/setting', authValidator, updateUser);
 /**
  * update user information
  */
- router.get('/users', authValidator, getUsers);
+router.get('/users', authValidator, getUsers);
 
 export default router;
