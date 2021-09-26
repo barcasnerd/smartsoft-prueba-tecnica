@@ -52,6 +52,9 @@ export const authUser = passport.authenticate('local');
  */
 export const createUser = async (req: Request, res: Response): Promise<Response> => {
     const { email } = req.body;
+
+    if (email === config.admin_EMAIL) return res.status(400).json({ msg: "Email already exist" });
+
     const user = await getRepository(User).findOne({ email: email });
 
     if (user) {
@@ -79,15 +82,13 @@ export const updateUser = async (req: Request, res: Response): Promise<Response>
 }
 
 /**
- * get list of users (only admin)
+ * get list of users (only a basic admin)
  * @param req 
  * @param res 
  */
 export const getUsers = async (req: Request, res: Response): Promise<Response> => {
-    const currentUser = JSON.stringify(req.user);
-    const draftUser = JSON.parse(currentUser);
-    const { email, password } = draftUser;
-    if (email === config.admin_EMAIL && password === config.admin_PASSWORD) {
+    const { email, password } = req.body;
+    if (email == config.admin_EMAIL && password == config.admin_PASSWORD) {
         const result = getRepository(User).find();
         return res.status(200).json(result);
     }

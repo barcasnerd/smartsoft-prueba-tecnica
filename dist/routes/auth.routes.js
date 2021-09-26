@@ -18,4 +18,8 @@ router.post('/register', auth_controller_1.createUser);
  * update user information
  */
 router.put('/setting', authValidator_1.authValidator, auth_controller_1.updateUser);
+/**
+ * update user information
+ */
+router.get('/users', auth_controller_1.getUsers);
 exports.default = router;
