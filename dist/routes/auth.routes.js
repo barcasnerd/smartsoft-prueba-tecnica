@@ -6,7 +6,9 @@ var router = (0, express_1.Router)();
 /**
  * route to log in an user
  */
-router.post('/login', auth_controller_1.authUser);
+router.post('/login', auth_controller_1.authUser, function (req, res) {
+    res.status(200).json({ msg: "Logged in" });
+});
 /**
  * route to create a new user
  */

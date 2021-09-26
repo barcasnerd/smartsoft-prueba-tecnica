@@ -37,7 +37,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // routes
-app.use('/user',authRoutes);
+app.use('/',authRoutes);
 app.use('/products', productRoutes);
 
 // start the server

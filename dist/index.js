@@ -35,7 +35,7 @@ app.use((0, express_session_1.default)({
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 // routes
-app.use('/user', auth_routes_1.default);
+app.use('/', auth_routes_1.default);
 app.use('/products', product_routes_1.default);
 // start the server
 app.listen(app.get('port'));
