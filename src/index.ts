@@ -20,23 +20,27 @@ createConnection(); // start orm database connection
 app.set('port', 3000); // set listening port
 
 // middlewares
-app.use(cors());
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(cookieParser(config.cookieParser_SECRET));
+app.use(cors()); // allow multiple server comunication
+app.use(morgan('dev')); // HTTP request logger 
+app.use(express.json()); //  recognize the incoming Request as JSON
+app.use(cookieParser(config.cookieParser_SECRET)); // parse cookies attached to the client request
+
+// create session integration
 app.use(session({
     secret: config.cookieParser_SECRET,
     resave: true,
     saveUninitialized: true
 }));
-app.use(passport.initialize());
-app.use(passport.session());
+
+// create authenticator
+app.use(passport.initialize()); 
+app.use(passport.session()); 
 
 // routes
-app.use('/api', userRoutes);
-app.use('/auth', authenticateRoutes);
+app.use(userRoutes);
+app.use(authenticateRoutes);
 
 
-// start
+// start the server
 app.listen(app.get('port'));
 console.log(`server on port ${app.get('port')}`);

@@ -1,19 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { ProductPurchase } from "./ProductPurchase";
 
 @Entity()
 export class User{
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column({nullable: true})
-    firstname: string;
-
-    @Column({nullable: true})
-    lastname: string;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column()
-    email: string;
+    name: string
 
     @Column()
-    password: string;
+    money: number
+
+    @OneToMany(() => ProductPurchase, purchase => purchase.user)
+    purchases: ProductPurchase[];
 }
