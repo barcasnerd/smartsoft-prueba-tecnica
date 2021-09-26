@@ -9,39 +9,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.ProductPurchase = void 0;
 var typeorm_1 = require("typeorm");
-var ProductPurchase_1 = require("./ProductPurchase");
-var User = /** @class */ (function () {
-    function User() {
+var Product_1 = require("./Product");
+var User_1 = require("./User");
+var ProductPurchase = /** @class */ (function () {
+    function ProductPurchase() {
     }
     __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
+        (0, typeorm_1.PrimaryGeneratedColumn)(),
         __metadata("design:type", String)
-    ], User.prototype, "id", void 0);
+    ], ProductPurchase.prototype, "id", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], User.prototype, "name", void 0);
+        (0, typeorm_1.ManyToMany)(function () { return Product_1.Product; }),
+        (0, typeorm_1.JoinTable)(),
+        __metadata("design:type", Array)
+    ], ProductPurchase.prototype, "products", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], User.prototype, "email", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], User.prototype, "password", void 0);
+        (0, typeorm_1.CreateDateColumn)(),
+        __metadata("design:type", Date)
+    ], ProductPurchase.prototype, "purchaseDate", void 0);
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", Number)
-    ], User.prototype, "money", void 0);
+    ], ProductPurchase.prototype, "total", void 0);
     __decorate([
-        (0, typeorm_1.OneToMany)(function () { return ProductPurchase_1.ProductPurchase; }, function (purchase) { return purchase.user; }),
-        __metadata("design:type", Array)
-    ], User.prototype, "purchases", void 0);
-    User = __decorate([
+        (0, typeorm_1.ManyToOne)(function () { return User_1.User; }, function (user) { return user.purchases; }),
+        __metadata("design:type", User_1.User)
+    ], ProductPurchase.prototype, "user", void 0);
+    ProductPurchase = __decorate([
         (0, typeorm_1.Entity)()
-    ], User);
-    return User;
+    ], ProductPurchase);
+    return ProductPurchase;
 }());
-exports.User = User;
+exports.ProductPurchase = ProductPurchase;

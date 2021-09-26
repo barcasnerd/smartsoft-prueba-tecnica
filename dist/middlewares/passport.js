@@ -39,40 +39,48 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createUser = exports.authUser = void 0;
 var passport_1 = __importDefault(require("passport"));
+var passport_local_1 = __importDefault(require("passport-local"));
 var typeorm_1 = require("typeorm");
 var User_1 = require("../entity/User");
+// create local strategy from passport
+var LocalStrategy = passport_local_1.default.Strategy;
 /**
- * authenticate an user using local strategy
+ * authenticate an user credentials
  */
-exports.authUser = passport_1.default.authenticate('local', function (req, res) {
-    res.json({ msg: "Succesfully logged in" });
-});
-/**
- * create a new user if don't exist
- * @param req
- * @param res
- * @returns res
- */
-var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, password, user, newUser, results;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.body, email = _a.email, password = _a.password;
-                return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).findOne({ email: email })];
+passport_1.default.use(new LocalStrategy({ usernameField: "email" }, function (email, password, done) { return __awaiter(void 0, void 0, void 0, function () {
+    var user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).findOne({ email: email, password: password })];
             case 1:
-                user = _b.sent();
+                user = _a.sent();
                 if (user) {
-                    return [2 /*return*/, res.status(400).json({ msg: "Email already exist" })];
+                    return [2 /*return*/, done(null, { id: user.id })];
                 }
-                newUser = (0, typeorm_1.getRepository)(User_1.User).create(req.body);
-                return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).save(newUser)];
-            case 2:
-                results = _b.sent();
-                return [2 /*return*/, res.status(201).json(results)];
+                done(null, false);
+                return [2 /*return*/];
         }
     });
-}); };
-exports.createUser = createUser;
+}); }));
+/**
+ * reduces the size of the user context by using a single parameter
+ */
+passport_1.default.serializeUser(function (req, user, done) {
+    done(undefined, user);
+});
+/**
+ * recreate the entire user based on an id
+ */
+passport_1.default.deserializeUser(function (id, done) { return __awaiter(void 0, void 0, void 0, function () {
+    var user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).findOne(id)];
+            case 1:
+                user = _a.sent();
+                done(null, user);
+                return [2 /*return*/];
+        }
+    });
+}); });

@@ -9,39 +9,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Product = void 0;
 var typeorm_1 = require("typeorm");
-var ProductPurchase_1 = require("./ProductPurchase");
-var User = /** @class */ (function () {
-    function User() {
+var Product = /** @class */ (function () {
+    function Product() {
     }
     __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
+        (0, typeorm_1.PrimaryGeneratedColumn)(),
         __metadata("design:type", String)
-    ], User.prototype, "id", void 0);
+    ], Product.prototype, "id", void 0);
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", String)
-    ], User.prototype, "name", void 0);
+    ], Product.prototype, "name", void 0);
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", String)
-    ], User.prototype, "email", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], User.prototype, "password", void 0);
+    ], Product.prototype, "category", void 0);
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", Number)
-    ], User.prototype, "money", void 0);
+    ], Product.prototype, "price", void 0);
     __decorate([
-        (0, typeorm_1.OneToMany)(function () { return ProductPurchase_1.ProductPurchase; }, function (purchase) { return purchase.user; }),
-        __metadata("design:type", Array)
-    ], User.prototype, "purchases", void 0);
-    User = __decorate([
+        (0, typeorm_1.Column)(),
+        __metadata("design:type", Number)
+    ], Product.prototype, "quantity", void 0);
+    Product = __decorate([
         (0, typeorm_1.Entity)()
-    ], User);
-    return User;
+    ], Product);
+    return Product;
 }());
-exports.User = User;
+exports.Product = Product;
