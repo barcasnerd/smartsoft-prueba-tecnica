@@ -60,5 +60,20 @@ export const createUser = async (req: Request, res: Response): Promise<Response>
 
     const newUser = getRepository(User).create(req.body);
     const results = await getRepository(User).save(newUser);
-    return res.status(201).json({msg: "Succesfully saved"});
+    return res.status(201).json({ msg: "Succesfully saved" });
 };
+
+/**
+ * update the current logged user
+ * @param req 
+ * @param res 
+ */
+export const updateUser = async (req: Request, res: Response): Promise<Response> => {
+    const user = await getRepository(User).findOne(req.user);
+    if (user) {
+        await getRepository(User).merge(user, req.body);
+        const result = await getRepository(User).save(user);
+        return res.status(200).json(result);
+    }
+    return res.status(404).json({ msg: "user not found" });
+}
