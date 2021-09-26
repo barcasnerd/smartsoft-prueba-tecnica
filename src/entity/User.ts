@@ -18,9 +18,6 @@ export class User {
     @Column()
     money: number
 
-    @Column({ nullable: true })
-    isAdmin: boolean
-
     @OneToMany(() => ProductPurchase, purchase => purchase.user)
     purchases: ProductPurchase[];
 }
