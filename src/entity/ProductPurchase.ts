@@ -17,6 +17,6 @@ export class ProductPurchase {
     @Column()
     total: number;
 
-    @Column()
+    @ManyToOne(() => User, user => user.purchases)
     user: User;
 }

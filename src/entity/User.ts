@@ -17,4 +17,7 @@ export class User{
 
     @Column()
     money: number
+
+    @OneToMany(() => ProductPurchase, purchase => purchase.user)
+    purchases: ProductPurchase[];
 }

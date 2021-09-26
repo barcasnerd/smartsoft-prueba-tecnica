@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getRepository, getManager} from "typeorm";
+import { getRepository, getManager } from "typeorm";
 import { ProductPurchase } from "../entity/ProductPurchase";
 import { Product } from "../entity/Product";
 import { User } from "../entity/User";
@@ -33,7 +33,31 @@ export const createPurchase = async (req: Request, res: Response): Promise<Respo
 
     const { products } = req.body;
     const productList = await manager.createQueryBuilder(Product, "product")
-        .where("product.id IN (:...products)", { products: products})
+        .where("product.id IN (:...products)", { products: products })
         .getMany();
 
+    let total = 0;
+    productList.forEach((product) => {
+        total += product.price * product.quantity;
+    });
+
+    if (currentUser && currentUser.money - total > 0) {
+        await getRepository(User).merge(currentUser, {
+            money: currentUser.money - total
+        })
+    } else {
+        return res.status(400).json({ msg: "Insufficient money" });
+    }
+
+    const newPurchase = await getRepository(ProductPurchase).create({
+        user: currentUser,
+        products: productList,
+        total: total
+    });
+
+    const result = await getRepository(ProductPurchase).save(newPurchase);
+    if (result) {
+        return res.status(201).json(result);
+    }
+    return res.status(400).json({ msg: "Failed to save purchase" });
 };

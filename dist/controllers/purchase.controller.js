@@ -36,24 +36,81 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPurchases = void 0;
+exports.createPurchase = exports.getPurchases = void 0;
 var typeorm_1 = require("typeorm");
 var ProductPurchase_1 = require("../entity/ProductPurchase");
+var Product_1 = require("../entity/Product");
+var User_1 = require("../entity/User");
 /**
- * Get a list of purcha saved on the user database table
+ * Get a list of purchases of the current user saved on the purchases database table
  * @param req
  * @param res
- * @returns list of products
+ * @returns list of purchases
  */
 var getPurchases = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
+    var currentUser, user, purchases;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, typeorm_1.getRepository)(ProductPurchase_1.ProductPurchase).find(req.body.user)];
+            case 0:
+                currentUser = JSON.stringify(req.user);
+                user = JSON.parse(currentUser);
+                return [4 /*yield*/, (0, typeorm_1.getRepository)(ProductPurchase_1.ProductPurchase).find({ user: user })];
             case 1:
-                products = _a.sent();
-                return [2 /*return*/, res.status(200).json(products)];
+                purchases = _a.sent();
+                return [2 /*return*/, res.status(200).json(purchases)];
         }
     });
 }); };
 exports.getPurchases = getPurchases;
+/**
+ * Create a purchase, then save it into the product database table
+ * @param req
+ * @param req
+ * @param res
+ * @returns the saved purchase
+ */
+var createPurchase = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var manager, currentUser, products, productList, total, newPurchase, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                manager = (0, typeorm_1.getManager)();
+                return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).findOne(req.user)];
+            case 1:
+                currentUser = _a.sent();
+                products = req.body.products;
+                return [4 /*yield*/, manager.createQueryBuilder(Product_1.Product, "product")
+                        .where("product.id IN (:...products)", { products: products })
+                        .getMany()];
+            case 2:
+                productList = _a.sent();
+                total = 0;
+                productList.forEach(function (product) {
+                    total += product.price * product.quantity;
+                });
+                if (!(currentUser && currentUser.money - total > 0)) return [3 /*break*/, 4];
+                return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).merge(currentUser, {
+                        money: currentUser.money - total
+                    })];
+            case 3:
+                _a.sent();
+                return [3 /*break*/, 5];
+            case 4: return [2 /*return*/, res.status(400).json({ msg: "Insufficient money" })];
+            case 5: return [4 /*yield*/, (0, typeorm_1.getRepository)(ProductPurchase_1.ProductPurchase).create({
+                    user: currentUser,
+                    products: productList,
+                    total: total
+                })];
+            case 6:
+                newPurchase = _a.sent();
+                return [4 /*yield*/, (0, typeorm_1.getRepository)(ProductPurchase_1.ProductPurchase).save(newPurchase)];
+            case 7:
+                result = _a.sent();
+                if (result) {
+                    return [2 /*return*/, res.status(201).json(result)];
+                }
+                return [2 /*return*/, res.status(400).json({ msg: "Failed to save purchase" })];
+        }
+    });
+}); };
+exports.createPurchase = createPurchase;
