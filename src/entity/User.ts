@@ -10,6 +10,12 @@ export class User{
     name: string
 
     @Column()
+    email: string
+
+    @Column()
+    password: string
+
+    @Column()
     money: number
 
     @OneToMany(() => ProductPurchase, purchase => purchase.user)

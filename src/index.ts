@@ -9,8 +9,8 @@ import { createConnection } from "typeorm"; // main database orm
 import passport from 'passport'
 
 // import routes
-import userRoutes from './routes/user.routes';
-import authenticateRoutes from './routes/auth.routes';
+import authRoutes from "./routes/auth.routes";
+import productRoutes from "./routes/product.routes";
 
 // inizialitations
 const app = express();
@@ -33,13 +33,12 @@ app.use(session({
 }));
 
 // create authenticator
-app.use(passport.initialize()); 
-app.use(passport.session()); 
+app.use(passport.initialize());
+app.use(passport.session());
 
 // routes
-app.use(userRoutes);
-app.use(authenticateRoutes);
-
+app.use('/user',authRoutes);
+app.use('/products', productRoutes);
 
 // start the server
 app.listen(app.get('port'));

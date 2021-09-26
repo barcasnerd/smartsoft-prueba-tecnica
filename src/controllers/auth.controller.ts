@@ -1,28 +1,30 @@
-import passport from 'passport';
-import passportLocal from 'passport-local';
+import passport from "passport";
+import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { User } from "../entity/User";
 
-const LocalStrategy = passportLocal.Strategy;
+/**
+ * authenticate an user using local strategy
+ */
+export const authUser = passport.authenticate('local', (req: Request, res: Response) => {
+    res.json({ msg: "Succesfully logged in" });
+});
 
-passport.use(new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
-    const user = await getRepository(User).findOne({ email: email, password: password });
+/**
+ * create a new user if don't exist
+ * @param req 
+ * @param res 
+ * @returns res
+ */
+export const createUser = async (req: Request, res: Response): Promise<Response> => {
+    const { email, password } = req.body;
+    const user = await getRepository(User).findOne({ email: email });
+
     if (user) {
-        return done(null, { id: user.id });
+        return res.status(400).json({ msg: "Email already exist" });
     }
-    done(null, false);
-}));
 
-
-passport.serializeUser<any, any>((req, user, done) => {
-    done(undefined, user);
-});
-
-passport.deserializeUser<any, any>(async (id, done) => {
-    let user = await getRepository(User).findOne(id);
-    done(null, user);
-});
-
-export const authUser = passport.authenticate('local', (req, res)=>{
-    res.json({msg: "Succesfully logged in"});
-});
+    const newUser = getRepository(User).create(req.body);
+    const results = await getRepository(User).save(newUser);
+    return res.status(201).json(results);
+};
