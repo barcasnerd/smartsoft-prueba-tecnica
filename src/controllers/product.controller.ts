@@ -10,7 +10,7 @@ import { Product } from "../entity/Product";
  */
 export const getProducts = async (req: Request, res: Response): Promise<Response> => {
     const products = await getRepository(Product).find();
-    return res.json(products);
+    return res.status(200).json(products);
 };
 
 /**
@@ -22,7 +22,7 @@ export const getProducts = async (req: Request, res: Response): Promise<Response
 export const createProduct = async (req: Request, res: Response): Promise<Response> => {
     const newproduct = getRepository(Product).create(req.body);
     const results = await getRepository(Product).save(newproduct);
-    return res.json(results);
+    return res.status(201).json(results);
 };
 
 /**
@@ -50,7 +50,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
     if (product) {
         getRepository(Product).merge(product, req.body);
         const results = await getRepository(Product).save(product);
-        return res.json(results);
+        return res.status(200).json(results);
     }
     return res.status(404).json({ msg: "Product not found" });
 };
@@ -61,7 +61,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
 export const deleteProduct = async (req: Request, res: Response): Promise<Response> => {
     const result = await getRepository(Product).delete(req.params.id);
     if (result) {
-        return res.json(result);
+        return res.status(200).json(result);
     }
     return res.status(404).json({ msg: "Product not found" });
 };

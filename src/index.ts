@@ -12,6 +12,7 @@ import { authValidator } from "./middlewares/authValidator";
 // import routes
 import authRoutes from "./routes/auth.routes";
 import productRoutes from "./routes/product.routes";
+import purchaseRoutes from "./routes/purchase.routes";
 
 // inizialitations
 const app = express();
@@ -38,8 +39,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // routes
-app.use('/',authRoutes);
-app.use('/products', authValidator, productRoutes);
+app.use('/api/v1',authRoutes);
+app.use('/api/v1/products', authValidator, productRoutes);
+app.use('/api/v1/purchases', authValidator, purchaseRoutes);
 
 // start the server
 app.listen(app.get('port'));
