@@ -16,6 +16,7 @@ var authValidator_1 = require("./middlewares/authValidator");
 // import routes
 var auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 var product_routes_1 = __importDefault(require("./routes/product.routes"));
+var purchase_routes_1 = __importDefault(require("./routes/purchase.routes"));
 // inizialitations
 var app = (0, express_1.default)();
 (0, typeorm_1.createConnection)(); // start orm database connection
@@ -36,8 +37,9 @@ app.use((0, express_session_1.default)({
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 // routes
-app.use('/', auth_routes_1.default);
-app.use('/products', authValidator_1.authValidator, product_routes_1.default);
+app.use('/api/v1', auth_routes_1.default);
+app.use('/api/v1/products', authValidator_1.authValidator, product_routes_1.default);
+app.use('/api/v1/purchases', authValidator_1.authValidator, purchase_routes_1.default);
 // start the server
 app.listen(app.get('port'));
 console.log("server on port " + app.get('port'));

@@ -52,7 +52,7 @@ var getProducts = function (req, res) { return __awaiter(void 0, void 0, void 0,
             case 0: return [4 /*yield*/, (0, typeorm_1.getRepository)(Product_1.Product).find()];
             case 1:
                 products = _a.sent();
-                return [2 /*return*/, res.json(products)];
+                return [2 /*return*/, res.status(200).json(products)];
         }
     });
 }); };
@@ -72,7 +72,7 @@ var createProduct = function (req, res) { return __awaiter(void 0, void 0, void 
                 return [4 /*yield*/, (0, typeorm_1.getRepository)(Product_1.Product).save(newproduct)];
             case 1:
                 results = _a.sent();
-                return [2 /*return*/, res.json(results)];
+                return [2 /*return*/, res.status(201).json(results)];
         }
     });
 }); };
@@ -116,7 +116,7 @@ var updateProduct = function (req, res) { return __awaiter(void 0, void 0, void 
                 return [4 /*yield*/, (0, typeorm_1.getRepository)(Product_1.Product).save(product)];
             case 2:
                 results = _a.sent();
-                return [2 /*return*/, res.json(results)];
+                return [2 /*return*/, res.status(200).json(results)];
             case 3: return [2 /*return*/, res.status(404).json({ msg: "Product not found" })];
         }
     });
@@ -133,7 +133,7 @@ var deleteProduct = function (req, res) { return __awaiter(void 0, void 0, void 
             case 1:
                 result = _a.sent();
                 if (result) {
-                    return [2 /*return*/, res.json(result)];
+                    return [2 /*return*/, res.status(200).json(result)];
                 }
                 return [2 /*return*/, res.status(404).json({ msg: "Product not found" })];
         }
