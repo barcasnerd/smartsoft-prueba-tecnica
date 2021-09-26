@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createUser = exports.authUser = void 0;
+exports.updateUser = exports.createUser = exports.authUser = void 0;
 var passport_1 = __importDefault(require("passport"));
 var typeorm_1 = require("typeorm");
 var User_1 = require("../entity/User");
@@ -116,3 +116,28 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.createUser = createUser;
+/**
+ * update the current logged user
+ * @param req
+ * @param res
+ */
+var updateUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).findOne(req.user)];
+            case 1:
+                user = _a.sent();
+                if (!user) return [3 /*break*/, 4];
+                return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).merge(user, req.body)];
+            case 2:
+                _a.sent();
+                return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).save(user)];
+            case 3:
+                result = _a.sent();
+                return [2 /*return*/, res.status(200).json(result)];
+            case 4: return [2 /*return*/, res.status(404).json({ msg: "user not found" })];
+        }
+    });
+}); };
+exports.updateUser = updateUser;

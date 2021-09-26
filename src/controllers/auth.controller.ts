@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { User } from "../entity/User";
 import passportLocal from 'passport-local';
-
+import config from "../config/config";
 
 
 // create local strategy from passport
@@ -76,4 +76,20 @@ export const updateUser = async (req: Request, res: Response): Promise<Response>
         return res.status(200).json(result);
     }
     return res.status(404).json({ msg: "user not found" });
+}
+
+/**
+ * get list of users (only admin)
+ * @param req 
+ * @param res 
+ */
+export const getUsers = async (req: Request, res: Response): Promise<Response> => {
+    const currentUser = JSON.stringify(req.user);
+    const draftUser = JSON.parse(currentUser);
+    const { email, password } = draftUser;
+    if (email === config.admin_EMAIL && password === config.admin_PASSWORD) {
+        const result = getRepository(User).find();
+        return res.status(200).json(result);
+    }
+    return res.status(401).json({ msg: "Access for admin only" })
 }

@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createPurchase = exports.getPurchases = void 0;
+exports.updatePurchase = exports.deletePurchase = exports.getPurchase = exports.createPurchase = exports.getPurchases = void 0;
 var typeorm_1 = require("typeorm");
 var ProductPurchase_1 = require("../entity/ProductPurchase");
 var Product_1 = require("../entity/Product");
@@ -79,32 +79,39 @@ var createPurchase = function (req, res) { return __awaiter(void 0, void 0, void
             case 1:
                 currentUser = _a.sent();
                 products = req.body.products;
-                return [4 /*yield*/, manager.createQueryBuilder(Product_1.Product, "product")
+                return [4 /*yield*/, manager.createQueryBuilder(Product_1.Product, "product") // then get all products with those ids
                         .where("product.id IN (:...products)", { products: products })
                         .getMany()];
             case 2:
                 productList = _a.sent();
                 total = 0;
                 productList.forEach(function (product) {
-                    total += product.price * product.quantity;
+                    total += product.price * product.quantity; // get the price by each product based on its price and quantity
                 });
-                if (!(currentUser && currentUser.money - total > 0)) return [3 /*break*/, 4];
+                if (!(currentUser && currentUser.money - total > 0)) return [3 /*break*/, 5];
+                // edit the user ammount badge
                 return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).merge(currentUser, {
                         money: currentUser.money - total
                     })];
             case 3:
+                // edit the user ammount badge
                 _a.sent();
-                return [3 /*break*/, 5];
-            case 4: return [2 /*return*/, res.status(400).json({ msg: "Insufficient money" })];
-            case 5: return [4 /*yield*/, (0, typeorm_1.getRepository)(ProductPurchase_1.ProductPurchase).create({
+                // save the updated user
+                return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).save(currentUser)];
+            case 4:
+                // save the updated user
+                _a.sent();
+                return [3 /*break*/, 6];
+            case 5: return [2 /*return*/, res.status(400).json({ msg: "Insufficient money" })];
+            case 6: return [4 /*yield*/, (0, typeorm_1.getRepository)(ProductPurchase_1.ProductPurchase).create({
                     user: currentUser,
                     products: productList,
                     total: total
                 })];
-            case 6:
+            case 7:
                 newPurchase = _a.sent();
                 return [4 /*yield*/, (0, typeorm_1.getRepository)(ProductPurchase_1.ProductPurchase).save(newPurchase)];
-            case 7:
+            case 8:
                 result = _a.sent();
                 if (result) {
                     return [2 /*return*/, res.status(201).json(result)];
@@ -114,3 +121,83 @@ var createPurchase = function (req, res) { return __awaiter(void 0, void 0, void
     });
 }); };
 exports.createPurchase = createPurchase;
+/**
+ * Gets a purchase based on the request id
+ * @param req
+ * @param res
+ * @returns a purchase
+ */
+var getPurchase = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, (0, typeorm_1.getRepository)(ProductPurchase_1.ProductPurchase).findOne(req.params.id)];
+            case 1:
+                result = _a.sent();
+                if (result) {
+                    return [2 /*return*/, res.status(302).json(result)];
+                }
+                return [2 /*return*/, res.status(404).json({ msg: "Purchase id not found" })];
+        }
+    });
+}); };
+exports.getPurchase = getPurchase;
+/**
+ * delete a purchase based on its id
+ */
+var deletePurchase = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, (0, typeorm_1.getRepository)(ProductPurchase_1.ProductPurchase).delete(req.params.id)];
+            case 1:
+                result = _a.sent();
+                if (result) {
+                    return [2 /*return*/, res.status(200).json(result)];
+                }
+                return [2 /*return*/, res.status(404).json({ msg: "Purchase id not found" })];
+        }
+    });
+}); };
+exports.deletePurchase = deletePurchase;
+/**
+ * Update an purchase based on request id and a product list
+ * @param req
+ * @param res
+ * @returns updated purchase
+ */
+var updatePurchase = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var manager, purchase, products, productList, total_1, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                manager = (0, typeorm_1.getManager)();
+                return [4 /*yield*/, (0, typeorm_1.getRepository)(ProductPurchase_1.ProductPurchase).findOne(req.params.id)];
+            case 1:
+                purchase = _a.sent();
+                if (!purchase) return [3 /*break*/, 4];
+                products = req.body.products;
+                return [4 /*yield*/, manager.createQueryBuilder(Product_1.Product, "product") // then get all products with those ids
+                        .where("product.id IN (:...products)", { products: products })
+                        .getMany()];
+            case 2:
+                productList = _a.sent();
+                total_1 = 0;
+                productList.forEach(function (product) {
+                    total_1 += product.price * product.quantity; // get the price by each product based on its price and quantity
+                });
+                // update the purchase
+                return [4 /*yield*/, (0, typeorm_1.getRepository)(ProductPurchase_1.ProductPurchase).merge(purchase, {
+                        products: productList,
+                        total: total_1
+                    })];
+            case 3:
+                // update the purchase
+                _a.sent();
+                result = (0, typeorm_1.getRepository)(ProductPurchase_1.ProductPurchase).save(purchase);
+                return [2 /*return*/, res.status(200).json(result)];
+            case 4: return [2 /*return*/, res.status(404).json({ msg: "Purchase id not found" })];
+        }
+    });
+}); };
+exports.updatePurchase = updatePurchase;

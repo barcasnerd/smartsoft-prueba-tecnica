@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { ProductPurchase } from "./ProductPurchase";
 
 @Entity()
-export class User{
+export class User {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
@@ -17,6 +17,9 @@ export class User{
 
     @Column()
     money: number
+
+    @Column({ nullable: true })
+    isAdmin: boolean
 
     @OneToMany(() => ProductPurchase, purchase => purchase.user)
     purchases: ProductPurchase[];

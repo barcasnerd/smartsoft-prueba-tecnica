@@ -21,4 +21,9 @@ router.post('/register', createUser);
  */
 router.put('/setting', authValidator, updateUser);
 
+/**
+ * update user information
+ */
+ router.get('/users', authValidator, getUsers);
+
 export default router;

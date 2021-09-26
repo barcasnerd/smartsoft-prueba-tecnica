@@ -36,6 +36,10 @@ var User = /** @class */ (function () {
         __metadata("design:type", Number)
     ], User.prototype, "money", void 0);
     __decorate([
+        (0, typeorm_1.Column)({ nullable: true }),
+        __metadata("design:type", Boolean)
+    ], User.prototype, "isAdmin", void 0);
+    __decorate([
         (0, typeorm_1.OneToMany)(function () { return ProductPurchase_1.ProductPurchase; }, function (purchase) { return purchase.user; }),
         __metadata("design:type", Array)
     ], User.prototype, "purchases", void 0);
