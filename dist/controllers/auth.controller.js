@@ -152,12 +152,16 @@ exports.updateUser = updateUser;
 var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, email, password, result;
     return __generator(this, function (_b) {
-        _a = req.body, email = _a.email, password = _a.password;
-        if (email == config_1.default.admin_EMAIL && password == config_1.default.admin_PASSWORD) {
-            result = (0, typeorm_1.getRepository)(User_1.User).find();
-            return [2 /*return*/, res.status(200).json(result)];
+        switch (_b.label) {
+            case 0:
+                _a = req.body, email = _a.email, password = _a.password;
+                if (!(email == config_1.default.admin_EMAIL && password == config_1.default.admin_PASSWORD)) return [3 /*break*/, 2];
+                return [4 /*yield*/, (0, typeorm_1.getRepository)(User_1.User).find()];
+            case 1:
+                result = _b.sent();
+                return [2 /*return*/, res.status(200).json(result)];
+            case 2: return [2 /*return*/, res.status(401).json({ msg: "Access for admin only" })];
         }
-        return [2 /*return*/, res.status(401).json({ msg: "Access for admin only" })];
     });
 }); };
 exports.getUsers = getUsers;

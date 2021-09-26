@@ -89,7 +89,7 @@ export const updateUser = async (req: Request, res: Response): Promise<Response>
 export const getUsers = async (req: Request, res: Response): Promise<Response> => {
     const { email, password } = req.body;
     if (email == config.admin_EMAIL && password == config.admin_PASSWORD) {
-        const result = getRepository(User).find();
+        const result = await getRepository(User).find();
         return res.status(200).json(result);
     }
     return res.status(401).json({ msg: "Access for admin only" })

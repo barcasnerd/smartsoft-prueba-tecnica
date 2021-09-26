@@ -24,6 +24,6 @@ router.put('/setting', authValidator, updateUser);
 /**
  * update user information
  */
-router.get('/users', getUsers);
+router.post('/users', getUsers);
 
 export default router;
