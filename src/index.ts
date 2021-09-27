@@ -39,6 +39,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // routes
+app.use('/', (req,res)=>{
+    res.send("Purchase products API")
+});
 app.use('/api/v1/auth',authRoutes);
 app.use('/api/v1/products', authValidator, productRoutes);
 app.use('/api/v1/purchases', authValidator, purchaseRoutes);

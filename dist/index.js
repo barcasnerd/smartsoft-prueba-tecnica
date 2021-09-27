@@ -37,7 +37,10 @@ app.use((0, express_session_1.default)({
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 // routes
-app.use('/api/v1', auth_routes_1.default);
+app.use('/', function (req, res) {
+    res.send("Purchase products API");
+});
+app.use('/api/v1/auth', auth_routes_1.default);
 app.use('/api/v1/products', authValidator_1.authValidator, product_routes_1.default);
 app.use('/api/v1/purchases', authValidator_1.authValidator, purchase_routes_1.default);
 // start the server
