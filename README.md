@@ -24,3 +24,14 @@ Go to the following url on your local machine, then follow the OpenApi/Swagger d
 
 `http://localhost/`
 
+## OpenApi/Swagger
+
+If you want to see the full documentation or the api run the following commands:
+
+`npm install -g swagger`
+
+Then open a server to access the view by running:
+
+`swagger project edit`
+
+The command above will open a render for the .yaml file
