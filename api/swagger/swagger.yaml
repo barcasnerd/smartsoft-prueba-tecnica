@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Product Purchase API
-  description: Thechnical assesment api for web backend developer for smartsoft labs company. **Alert:** Must to run containers on local, then use the **Try it out** function.
+  description: Thechnical assesment api for web backend developer for smartsoft labs company. **Hint:** Must to run containers on local, then use the **Try it out** function.
   version: 1.0.0
 servers:
   - url: http://localhost/api/v1
@@ -170,7 +170,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ProducPurchase'
+                  $ref: '#/components/schemas/ProductPurchase'
         '401':
           description: not an admin user
           content:
@@ -245,7 +245,7 @@ paths:
       description: Gets a single product based on its id
       responses:
         '200':
-          description: A JSON object whith product the created
+          description: A JSON object whith the product found
           content:
             application/json:
               schema:
@@ -304,10 +304,10 @@ paths:
             schema:      # Request body contents
               $ref: '#/components/schemas/Product'  
     delete:
-      summary: Edit product
+      summary: delete product
       tags:
         - product
-      description: Edit a product found by its id
+      description: delete a product found by its id
       responses:
         '200':
           description: OK
@@ -328,6 +328,141 @@ paths:
           schema:
             type: integer
           required: true
+
+  /purchases:
+    get:
+      tags:
+        - purchase
+      summary: get purchase
+      description: gets a list of purchases of the authenticated current user
+      responses:
+        '200':
+          description: A JSON array of the purchase list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductPurchase'
+    post:
+      tags:
+        - purchase    
+      summary: create a purchase
+      description: Creates a new purchase
+      responses:
+        '201':
+          description: A JSON string with the created purchase
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPurchase'          
+        '400':        
+          description: Failed
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                schema:
+                  type: array
+                  items:
+                    type: string
+              example:
+                {"productList":["12","213","3"]}
+                
+  /purchases/{id}:
+    get:
+      summary: Get purchase
+      tags:
+      - purchase
+      description: Gets a single purchase based on its id
+      responses:
+        '302':
+          description: A JSON object whith the purchase found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPurchase'
+        '404':
+          description: id wasn't found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                example:
+                  msg: Purchase id not found
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+    
+    put:
+      tags:
+        - purchase    
+      summary: update a purchase
+      description: update a  purchase
+      responses:
+        '200':
+          description: A JSON string with the updated purchase
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPurchase'          
+        '400':        
+          description: Failed
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                schema:
+                  type: array
+                  items:
+                    type: string
+              example:
+                {"productList":["12","213","3"]}
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          
+    delete:
+      summary: delete purchase
+      tags:
+        - purchase
+      description: delete purchase by its id
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: id wasn't found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                example:
+                  msg: Purchase id not found
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+
+          
 components:
   schemas:
     Product:
@@ -356,7 +491,7 @@ components:
           type: string          
         money:
           type: integer
-    ProducPurchase:
+    ProductPurchase:
       type: object
       properties:
         id:
