@@ -42,4 +42,3 @@ app.use('/api/v1/products', authValidator_1.authValidator, product_routes_1.defa
 app.use('/api/v1/purchases', authValidator_1.authValidator, purchase_routes_1.default);
 // start the server
 app.listen(app.get('port'));
-console.log("server on port " + app.get('port'));
