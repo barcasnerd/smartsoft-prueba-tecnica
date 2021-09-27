@@ -23,3 +23,10 @@ services:
             - "5432:5432"
         logging:
             driver: none
+    nginx:
+        build: ./nginx
+        ports: 
+            - 80:80
+        links:
+            - api
+        restart: always
