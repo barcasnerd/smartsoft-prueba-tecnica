@@ -6,10 +6,17 @@ info:
 servers:
   - url: http://localhost/api/v1
     description: Develompent (dev) server
+tags:
+- name: auth
+- name: product
+- name: purchase
+
 paths:
   /example/{userId}:
     post:
       summary: Login an user into a local session storage
+      tags:
+      - auth
       description: Authenticates
       responses:
         '200':
@@ -28,8 +35,10 @@ paths:
           required: true
           description: Numeric ID of the user to get
   
-  /login:
+  /auth/login:
     post:
+      tags:
+        - auth
       summary: Login an user
       description: Authenticates an user and save to local session
       responses:
@@ -59,8 +68,10 @@ paths:
                 email: example@example.com
                 password: examplePassword
 
-  /register:
+  /auth/register:
     post:
+      tags:
+        - auth    
       summary: Resgister an user
       description: Creates a new user
       responses:
@@ -108,8 +119,10 @@ paths:
                 name: Example User
                 money: 80000
                 
-  /setting:
+  /auth/setting:
     post:
+      tags:
+        - auth    
       summary: Edit an user
       description: Edit current local sessionan user
       responses:
@@ -167,8 +180,10 @@ paths:
                 password: examplePassword     
                 name: Example User
                 money: 80000
-  /users:
+  /auth/users:
     get:
+      tags:
+        - auth    
       summary: get users
       description: gets a list of users using and simple admin user generated
       responses:
