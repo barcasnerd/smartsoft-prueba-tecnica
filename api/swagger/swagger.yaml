@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Product Purchase API
-  description: Thechnical assesment api for web backend developer for smartsoft labs company
+  description: Thechnical assesment api for web backend developer for smartsoft labs company. **Alert:** Must to run containers on local, then use the **Try it out** function.
   version: 1.0.0
 servers:
   - url: http://localhost/api/v1
@@ -10,31 +10,7 @@ tags:
 - name: auth
 - name: product
 - name: purchase
-
 paths:
-  /example/{userId}:
-    post:
-      summary: Login an user into a local session storage
-      tags:
-      - auth
-      description: Authenticates
-      responses:
-        '200':
-          description: A JSON array of user names
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-      parameters:
-        - in: path
-          name: userId
-          schema:
-            type: integer
-          required: true
-          description: Numeric ID of the user to get
-  
   /auth/login:
     post:
       tags:
@@ -207,19 +183,164 @@ paths:
                     description: failed listing
                 example:
                   msg: Access for admin only
+  /products:
+    get:
+      tags:
+        - product    
+      summary: get products
+      description: gets a list of products of the authenticated current user
+      responses:
+        '200':
+          description: A JSON array of the product list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      tags:
+        - product    
+      summary: create a product
+      description: Creates a new product
+      responses:
+        '201':
+          description: A JSON string with the created product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: 
+                    type: string
+                  name: 
+                    type: string
+                  category: 
+                    type: string
+                  price: 
+                    type: integer
+                  quantity: 
+                    type: integer                    
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                id: 
+                  type: string
+                name: 
+                  type: string
+                category: 
+                  type: string
+                price: 
+                  type: integer
+                quantity: 
+                  type: integer       
+  /products/{id}:
+    get:
+      summary: Get product
+      tags:
+      - product
+      description: Gets a single product based on its id
+      responses:
+        '200':
+          description: A JSON object whith product the created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: id wasn't found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                example:
+                  msg: Product not found
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+    
+    put:
+      summary: Edit product
+      tags:
+      - product
+      description: Edit a product found by its id
+      responses:
+        '200':
+          description: A JSON object whith product the updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: id wasn't found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                example:
+                  msg: Product not found
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              $ref: '#/components/schemas/Product'  
+    delete:
+      summary: Edit product
+      tags:
+        - product
+      description: Edit a product found by its id
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: id wasn't found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                example:
+                  msg: Product not found
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
 components:
   schemas:
     Product:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         name:
           type: string
         category:
           type: string
         price:
-          type: string          
+          type: integer          
         quantity:
           type: integer  
     User:
