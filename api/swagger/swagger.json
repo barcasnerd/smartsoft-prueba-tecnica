@@ -1,0 +1,69 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Product Purchase API",
+        "description": "Thechnical assesment api for web backend developer for smartsoft labs company",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api/v1",
+            "description": "Develompent (dev) server"
+        }
+    ],
+    "paths": {
+        "/example/{userId}": {
+            "post": {
+                "summary": "Login an user into a local session storage",
+                "description": "Authenticates",
+                "responses": {
+                    "200": {
+                        "description": "A JSON array of user names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true,
+                        "description": "Numeric ID of the user to get"
+                    }
+                ]
+            }
+        },
+        "/login": {
+            "post": {
+                "summary": "Login an user",
+                "description": "Authenticates an user and save to local session",
+                "responses": {
+                    "200": {
+                        "description": "A JSON string within a success message",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

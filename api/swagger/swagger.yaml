@@ -1,0 +1,237 @@
+openapi: 3.0.0
+info:
+  title: Product Purchase API
+  description: Thechnical assesment api for web backend developer for smartsoft labs company
+  version: 1.0.0
+servers:
+  - url: http://localhost/api/v1
+    description: Develompent (dev) server
+paths:
+  /example/{userId}:
+    post:
+      summary: Login an user into a local session storage
+      description: Authenticates
+      responses:
+        '200':
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+  
+  /login:
+    post:
+      summary: Login an user
+      description: Authenticates an user and save to local session
+      responses:
+        '200':
+          description: A JSON string within a success message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                    description: Login message
+                example:
+                  msg: Logged in
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              example:   # Sample object
+                email: example@example.com
+                password: examplePassword
+
+  /register:
+    post:
+      summary: Resgister an user
+      description: Creates a new user
+      responses:
+        '201':
+          description: A JSON string within a success message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                    description: Resgister message
+                example:
+                  msg: Succesfully saved
+        '400':
+          description: A JSON string within a failed message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                    description: failed registration
+                example:
+                  msg: Email already exist
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                name:
+                  type: string
+                money:
+                  type: integer                  
+              example:   # Sample object
+                email: example@example.com
+                password: examplePassword     
+                name: Example User
+                money: 80000
+                
+  /setting:
+    post:
+      summary: Edit an user
+      description: Edit current local sessionan user
+      responses:
+        '200':
+          description: A JSON object with the user updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string                  
+                  password:
+                    type: string                  
+                  email:
+                    type: string                  
+                  money:
+                    type: integer                  
+                example:
+                 id: asdlkn1211lqskwnd
+                 name: Example
+                 password: examplepassowrd
+                 email: example@example.com
+                 money: 23422
+        '404':
+          description: failed update
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                    description: failed update
+                example:
+                  msg: User not found
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                name:
+                  type: string
+                money:
+                  type: integer                  
+              example:   # Sample object
+                email: example@example.com
+                password: examplePassword     
+                name: Example User
+                money: 80000
+  /users:
+    get:
+      summary: get users
+      description: gets a list of users using and simple admin user generated
+      responses:
+        '200':
+          description: A JSON array of the users list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProducPurchase'
+        '401':
+          description: not an admin user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                    description: failed listing
+                example:
+                  msg: Access for admin only
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          type: string
+        price:
+          type: string          
+        quantity:
+          type: integer  
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        password:
+          type: string
+        email:
+          type: string          
+        money:
+          type: integer
+    ProducPurchase:
+      type: object
+      properties:
+        id:
+          type: integer
+        purchaseDate:
+          type: string
+        total:
+          type: integer
+        user: 
+          $ref: '#/components/schemas/User'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
